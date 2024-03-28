@@ -83,7 +83,7 @@ class User
             $result = pg_prepare($this->db, "getUser", $checkUserquery);
             $result = pg_execute($this->db, "getUser", array($oauth_id));
 
-            $userData = pg_fetch_row($result);
+            $userData = pg_fetch_assoc($result);
         }
 
         // Return user data 
