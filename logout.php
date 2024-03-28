@@ -1,7 +1,7 @@
 <?php 
  
 // Include configuration file 
-require_once 'config.php'; 
+require_once 'connection.php'; 
  
 // Remove token and user data from the session 
 unset($_SESSION['token']); 
