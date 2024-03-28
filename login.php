@@ -41,7 +41,7 @@
 
     <p class="mt-10 text-center text-sm text-gray-500">
       Not a member?
-      <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign Up</a>
+      <a href="register.php" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign Up</a>
     </p>
 
     <p class="mt-10 mb-10 text-center text-sm text-gray-500">Or</p>
