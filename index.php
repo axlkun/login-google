@@ -1,80 +1,38 @@
-<?php 
+<!doctype html>
+<html>
 
-require_once __DIR__ . '/connection.php';
-require_once __DIR__ . '/User.php';
- 
-if(isset($_GET['code'])){ 
-    $gClient->authenticate($_GET['code']); 
-    $_SESSION['token'] = $gClient->getAccessToken(); 
-    header('Location: ' . filter_var(GOOGLE_REDIRECT_URL, FILTER_SANITIZE_URL)); 
-} 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-if(isset($_SESSION['token'])){ 
-    $gClient->setAccessToken($_SESSION['token']); 
-} 
+<body>
+    <section class="bg-gray-900 text-white min-h-screen">
+        <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+            <div class="mx-auto max-w-3xl text-center">
+                <h1 class="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+                    Test Application.
 
-// Define los alcances que deseas obtener del usuario
-$scopes = array(
-  'https://www.googleapis.com/auth/userinfo.email',
-  'https://www.googleapis.com/auth/userinfo.profile',
-  'openid'
-);
+                    <span class="sm:block p-5"> Google Login OAuth 2.0. </span>
+                </h1>
 
-// Establece los alcances para el cliente de Google
-$gClient->setScopes($scopes);
- 
-if($gClient->getAccessToken()){ 
-    // Get user profile data from google 
-    $gpUserProfile = $google_oauthV2->userinfo->get(); 
+                <p class="mx-auto mt-8 max-w-xl sm:text-xl/relaxed">
+                    Simple login example using a third party to authenticate users (Google OAuth 2.0)
+                </p>
 
-    // Initialize User class 
-    $user = new User(); 
-     
-    // Getting user profile info 
-    $gpUserData = array(); 
-    $gpUserData['oauth_id']  = !empty($gpUserProfile['id'])?$gpUserProfile['id']:''; 
-    $gpUserData['first_name'] = !empty($gpUserProfile['given_name'])?$gpUserProfile['given_name']:''; 
-    $gpUserData['last_name']  = !empty($gpUserProfile['family_name'])?$gpUserProfile['family_name']:''; 
-    $gpUserData['email']       = !empty($gpUserProfile['email'])?$gpUserProfile['email']:''; 
-    // $gpUserData['gender']       = !empty($gpUserProfile['gender'])?$gpUserProfile['gender']:''; 
-    // $gpUserData['locale']       = !empty($gpUserProfile['locale'])?$gpUserProfile['locale']:''; 
-    // $gpUserData['picture']       = !empty($gpUserProfile['picture'])?$gpUserProfile['picture']:''; 
-     
-    // Insert or update user data to the database 
-    // $gpUserData['oauth_provider'] = 'google'; 
-    $userData = $user->checkUser($gpUserData); 
- 
-    // Storing user data in the session 
-    $_SESSION['userData'] = $userData; 
-     
-    // Render user profile data 
-    if(!empty($userData)){ 
-        $output     = '<h2>Google Account Details</h2>'; 
-        $output .= '<div class="ac-data">'; 
-        // $output .= '<img src="'.$userData['picture'].'">'; 
-        $output .= '<p><b>Google ID:</b> '.$userData['oauth_id'].'</p>'; 
-        $output .= '<p><b>Name:</b> '.$userData['first_name'].' '.$userData['last_name'].'</p>'; 
-        $output .= '<p><b>Email:</b> '.$userData['email'].'</p>'; 
-        // $output .= '<p><b>Gender:</b> '.$userData['gender'].'</p>'; 
-        // $output .= '<p><b>Locale:</b> '.$userData['locale'].'</p>'; 
-        $output .= '<p><b>Logged in with:</b> Google Account</p>'; 
-        $output .= '<p>Logout from <a href="logout.php">Google</a></p>'; 
-        $output .= '</div>'; 
-    }else{ 
-        $output = '<h3 style="color:red">Some problem occurred, please try again.</h3>'; 
-    } 
-}else{ 
-    // Get login url 
-    $authUrl = $gClient->createAuthUrl(); 
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <a class="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto" href="login.php">
+                        Login
+                    </a>
 
-    $gClient->setHttpClient(new GuzzleHttp\Client(['verify' => false]));
-     
-    // Render google login button 
-    $output = '<a href="'. $authUrl .'" class="login-btn">Sign in with Google</a>'; 
-} 
-?>
+                    <a class="block w-full rounded border border-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto" href="register.php">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
 
-<div class="container">
-    <!-- Display login button / Google profile information -->
-    <?php echo $output; ?>
-</div>
+</html>
